@@ -1,0 +1,164 @@
+*{box-sizing: border-box;}
+html, body {
+	margin: 0;
+	width: 100%;
+    height: 100%;
+}
+
+.interface_button{
+       cursor: pointer;
+}
+
+#start_box{
+	position: absolute;
+	z-index: 10;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(200,200,200,0.6);
+}
+
+#start_button{
+	width: 11%;
+	height: 11%;
+	position: absolute;
+	left: 50%;
+	top: 40%;
+	transform: translate(-50%,-50%);
+	font-size: 50px;
+	opacity: 1;
+	border: solid;
+	border-radius: 15px;
+}
+
+#end_box{
+	position: absolute;
+	z-index: 11;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(200,200,200,0.6);
+}
+
+#success_box{
+	width: 25%;
+	height: 40%;
+	position: absolute;
+	left: 50%;
+	top: 40%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	font-size: 35px;
+	border: solid;
+	border-radius: 30px;
+	padding-top: 30px;
+	background-color: #dddddd;
+}
+
+#success_time{
+	margin-top:50px;
+	font-size: 40px;
+}
+
+#restart_button{
+	width: auto;
+	height: auto;
+	position: absolute;
+	left: 50%;
+	top: 80%;
+	transform: translate(-50%,-50%);
+	font-size: 50px;
+	opacity: 1;
+	border: solid;
+	border-radius: 15px;
+}
+
+
+#timer_box{
+	z-index: 3;
+	position: absolute;
+	left: 50%;
+	top: 8%;
+	transform: translate(-50%,-50%);
+}
+.timer{
+	font-size: 21px;
+}
+
+#sudoku{
+	z-index: 1;
+	border-collapse: collapse;
+	position: absolute;
+	left: 50%;
+	top: 45%;
+	transform: translate(-50%,-50%);
+}
+#sudoku tr{
+}
+
+#sudoku tr:first-child td{
+	border-top-color: black;
+}
+
+#sudoku tr:nth-child(3n) td{
+	border-bottom-color: black;
+}
+
+#sudoku tr td{
+	border: 1px solid lightgrey;
+	width: 60px;
+	height: 60px;
+	text-align: center;
+	padding-top: 0.5%;
+}
+#sudoku tr td:first-child{
+	border-left-color: black;
+}
+#sudoku tr td:nth-child(3n){
+	border-right-color: black;
+}
+
+.myInput {
+	border: none;
+	text-align: center;
+	width: 99%;
+	height: 99%;
+	background-color: #fff;
+	display: inline-block;
+	font-size: 40px;
+}
+.mapInput {
+	border: none;
+	text-align: center;
+	width: 99%;
+	height: 99%;
+	background-color: #fff;
+	display: inline-block;
+	font-size: 40px;
+}
+.mapInput:focus {
+  box-shadow: none;
+}
+
+#keyboard{
+	position: absolute;
+	display: none;
+	z-index: 2;
+	border: solid;
+	border-radius: 5px;
+	background: #ffd;
+}
+
+#keyboard tr td{
+	width: 45px;
+	height: 45px;
+}
+
+.numkey{
+	width: 99%;
+	height: 99%;
+	font-size: 30px;
+}
+#erasekey{
+	width: 99%;
+	height: 99%;
+	font-size: 30px;
+}
