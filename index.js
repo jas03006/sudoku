@@ -19,6 +19,8 @@ var numkeys;
 var erasekey;
 var dif_buttons;
 var dropdown_content;
+var upper_interface;
+var timer;
 
 //init
 init();
@@ -41,7 +43,9 @@ function init_map(){
 	erasekey = document.getElementById("erasekey");
 	dif_buttons = document.getElementsByClassName("dif_button");
 	dropdown_content = document.getElementsByClassName("dropdown-content")[0];
-
+	upper_interface = document.getElementById("upper_interface");
+	timer_box = document.getElementById("timer_box");
+	
 	init_event();
 	
 	now_cell_button = table.rows[0].cells[0].children[0];
@@ -119,6 +123,9 @@ function init_interface_design(){
 	for(var i = 0; i < buttons.length; i++){
 		buttons[i].style.backgroundColor = tema_color;
 	}
+	
+	//upper_interface.style.paddingLeft = table.offsetLeft+"px";
+	//timer_box.style.marginLeft = cell_size*8.1+"px";
 }
 
 //create empty sudoku map
@@ -173,8 +180,8 @@ function init_mapcell_onclick(){
 }
 function mapcell_onclick(){
 	keyboard.style.display = "inline-block";
-	keyboard.style.left = (table.offsetLeft+this.parentElement.offsetLeft-cell_size*4)+"px";
-	keyboard.style.top = (table.offsetTop+this.parentElement.offsetTop-cell_size*4)+"px";
+	keyboard.style.left = (table.offsetLeft+this.parentElement.offsetLeft+cell_size*0.5)+"px";
+	keyboard.style.top = (table.offsetTop+this.parentElement.offsetTop+cell_size*0.5)+"px";
 	now_cell_button = this;	
 	dropdown_content.style.display = "none";
 }
