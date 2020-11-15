@@ -10,6 +10,7 @@ var same_value_color = "#d0d0d0";
 var conflict_value_color = "#ff0000";
 var basic_background_color = "";
 var cell_hover_color = "#eeee00";
+var memo_active_color = "#00dddd";
 
 var myCells;
 var cell_size;
@@ -17,6 +18,7 @@ var keyboard;
 var cell_buttons;
 var numkeys;
 var erasekey;
+var memokey;
 var dif_buttons;
 var dropdown_content;
 var upper_interface;
@@ -41,6 +43,7 @@ function init_map(){
 	cell_buttons = document.getElementsByClassName("myInput");
 	numkeys = document.getElementsByClassName("numkey");
 	erasekey = document.getElementById("erasekey");
+	memokey = document.getElementById("memokey");
 	dif_buttons = document.getElementsByClassName("dif_button");
 	dropdown_content = document.getElementsByClassName("dropdown-content")[0];
 	upper_interface = document.getElementById("upper_interface");
@@ -56,6 +59,7 @@ function init_event(){
 	init_mapcell_onclick();
 	init_numkey_onclick();
 	init_erasekey_onclick();
+	init_memokey_onclick()
 	init_html_onclick();
 	init_start_onclick();
 	init_restart_onclick();
@@ -122,10 +126,7 @@ function init_interface_design(){
 	var buttons = document.getElementsByClassName("interface_button");
 	for(var i = 0; i < buttons.length; i++){
 		buttons[i].style.backgroundColor = tema_color;
-	}
-	
-	//upper_interface.style.paddingLeft = table.offsetLeft+"px";
-	//timer_box.style.marginLeft = cell_size*8.1+"px";
+	} 
 }
 
 //create empty sudoku map
@@ -156,7 +157,6 @@ function load_map(m){
 				c.value = v;
 				c.innerHTML = v;
 				c.className = "mapInput";
-				//c.disabled = true;
 				c.style.color = map_text_color;
 				c.onclick = function(){
 					now_cell_button = this;
@@ -164,7 +164,7 @@ function load_map(m){
 				}
 			}else{
 				c.value = 0;
-				c.innerHTML = "";
+				c.innerHTML = "&nbsp";
 				c.className = "myInput";
 				c.style.color = input_text_color; 
 			}		
@@ -182,8 +182,16 @@ function mapcell_onclick(){
 	keyboard.style.display = "inline-block";
 	keyboard.style.left = (table.offsetLeft+this.parentElement.offsetLeft+cell_size*0.5)+"px";
 	keyboard.style.top = (table.offsetTop+this.parentElement.offsetTop+cell_size*0.5)+"px";
-	now_cell_button = this;	
-	dropdown_content.style.display = "none";
+	now_cell_button = this;
+	dropdown_content.style.display = "none";	
+	
+	if(now_cell_button.children.length == 0){
+		memokey.style.backgroundColor = "";
+		memokey.value = "0";
+	}else{
+		memokey.style.backgroundColor = memo_active_color;
+		memokey.value = "1";
+	}
 }
 
 
@@ -194,12 +202,23 @@ function init_numkey_onclick(){
 	}
 }
 function numkey_onclick(){
-	var old_v = now_cell_button.value;
-	now_cell_button.value = this.value;
-	now_cell_button.innerHTML = now_cell_button.value;
-	check_integrity(now_cell_button, old_v);
-	//now_cell_button = "";
-	check_success();
+	if(memokey.value == 0){
+		var old_v = now_cell_button.value;
+		now_cell_button.value = this.value;
+		now_cell_button.innerHTML = now_cell_button.value;
+		check_integrity(now_cell_button, old_v);
+		//now_cell_button = "";
+		check_success();
+		keyboard.style.display = "none";
+	}else if(memokey.value == 1){
+		var v = this.value-1;
+		var c = now_cell_button.children[0].rows[parseInt(v/3)].cells[v%3];
+		if(c.innerHTML == v+1){
+			c.innerHTML = "&nbsp";
+		}else{
+			c.innerHTML = v+1;
+		}
+	}
 }
 
 //click keyboard erasekey button
@@ -207,8 +226,44 @@ function init_erasekey_onclick(){
 	erasekey.onclick = function(){
 		var old_v = now_cell_button.value;
 		now_cell_button.value = 0;
-		now_cell_button.innerHTML = "";
+		now_cell_button.innerHTML = "&nbsp";
 		check_integrity(now_cell_button, old_v);
+		keyboard.style.display = "none";
+	}
+}
+
+//click keyboard memokey button
+function init_memokey_onclick(){
+	memokey.onclick = memokey_onclick;
+}
+function memokey_onclick(){
+	if(memokey.value == 0){
+		memokey.style.backgroundColor = memo_active_color;
+		memokey.value = "1";
+		
+		if(now_cell_button.children.length == 0){
+			var old_v = now_cell_button.value;
+			now_cell_button.value = 0;
+			
+			now_cell_button.innerHTML = '<table class = "memo_table"></table>';
+			var t = now_cell_button.children[0];
+			console.log(now_cell_button.parentElement);
+			var row_;
+			var cell_;
+			for(var i =0; i < 3; i++){
+				row_ = t.insertRow();
+				for(var j = 0; j < 3; j++){
+					cell_ = row_.insertCell();
+					cell_.className = "memo_cell";
+					cell_.innerHTML = "&nbsp";
+					cell_.style.borderColor = "lightgrey";
+				}
+			}
+		}
+		check_integrity(now_cell_button, old_v);
+	}else if(memokey.value == 1){
+		memokey.style.backgroundColor = "";
+		memokey.value = "0";
 	}
 }
 
@@ -218,7 +273,7 @@ function init_html_onclick(){
 		if(e.target.className != "dropbtn" ){
 			dropdown_content.style.display = "none";
 		}
-		if(e.target.className != "myInput"){
+		if(!(e.target.id == "memokey"|| e.target.className == "numkey" || e.target.className == "myInput" || e.target.className == "memo_cell")){
 			keyboard.style.display = "none";
 		}
 	}
